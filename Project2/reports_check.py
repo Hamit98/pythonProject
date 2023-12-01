@@ -1,12 +1,7 @@
 from cryptography.fernet import Fernet
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 encrypted_reports_path = 'spy_reports'
-
-decrypted_reports_path = 'decrypted_reports'
 
 key_path = 'spy.key'
 with open(key_path, 'rb') as key_file:
@@ -37,14 +32,14 @@ if key:
 
             decrypted_data = cipher.decrypt(encrypted_data)
 
-            decrypted_file_name = f"{file_name}"
+            decrypted_text = decrypted_data.decode('utf-8')
 
-            decrypted_file_path = os.path.join(decrypted_reports_path, decrypted_file_name)
+            modified_text = decrypted_text.replace('вра', 'дру', -1)
 
-            with open(decrypted_file_path, 'wb') as decrypted_file:
-                decrypted_file.write(decrypted_data)
+            modified_text += "\nПроверено!"
 
-            print(f"Отчет {file_name} успешно дешифрован и сохранен в {decrypted_file_path}")
+            print(modified_text)
+
         else:
             print(f"Отчет {file_name} отсутствует.")
 else:
